@@ -7,6 +7,7 @@ const useStyles=makeStyles(theme=>({
     	minHeight:'unset',
     	borderStyle:'solid',
     	borderWidth:'2px',
+        height:'140px',
     	'& p':{
     		fontSize:'0.8rem',
     		fontWeight:600
@@ -17,15 +18,36 @@ const useStyles=makeStyles(theme=>({
     }	
 }));
 
-function ImageDropZone(){
+function ImageDropZone(props){
+
+    const { imageInfo,imageSectionId,handlePageState } = props;
 
 	const classes=useStyles();
+
+    const handleFileChange=(fileArr)=>{
+
+      if(fileArr && fileArr.length===0){
+        return;
+      }
+      handlePageState();                 
+         
+    }
+
+    const handleFileDelete=(fileObj)=>{
+
+    }
+
+
     return(
     	<DropzoneArea 
     	        dropzoneText="Upload Background Image"
     	        filesLimit={1}
-    	        acceptedFiles={['image/*']}
+                maxFileSize={5242880}
+    	        acceptedFiles={['image/png','image/jpeg']}
     	        dropzoneClass={`${classes.root} uploadIconColor uploadTextColor`}
+                initialFiles={[]}
+                onChange={handleFileChange}
+                onDelete={handleFileDelete}
     	/>
     );
 

@@ -1,6 +1,6 @@
 import React , { useState, useEffect } from 'react';
 import { Container } from '@material-ui/core'; 
-import { ImageSectionCount } from './constants.js';
+import { DefaultImageSectionCount } from './constants.js';
 import ImagesUploadSection from './ImagesUploadSection.js';
 import SaveCancelSection from './SaveCancelSection.js';
 import { makeStyles } from '@material-ui/core/styles';
@@ -15,22 +15,51 @@ const useStyles=makeStyles(theme=>({
 
 function DefaultLoginPageBackground(){
 
-	const [pageState,setPageState]=useState({});
+	const setInitialState=()=>{
+		 let imageSections=new Array(DefaultImageSectionCount).fill('');
+         return imageSections.map((a,index)=>{
+         	return {
+         		imageSectionId:index+1,
+         		firstImage:{
+         			imageNo:1,
+         			fileExist:false,
+         			fileObj:null
+         		},
+         		secondImage:{
+                    imageNo:2,
+         			fileExist:false,
+         			fileObj:null
+         		},
+         		loginBoxAlignment:'center'
+         	};
+         });
+	}
+
+	const [pageState,setPageState]=useState(()=>setInitialState());
 	const classes=useStyles();
 
 	useEffect(()=>{
       //It will get executed on component mount
+      //Will call GET API to fetch the saved page information
+      console.log('Component Did Mount');
 	},[]);
-    
-    let imagesSections=new Array(ImageSectionCount).fill('');
+
+	const handlePageState=()=>{
+       console.log('We are in handlePageState');
+       setPageState([]);
+	}
+
 	return(
 	  <>
-	    <Container>
-	    	<PageHeader/>
-	    </Container>	
+	    <PageHeader/>
 		<Container className={classes.imageSectionsContainer}>
 			{ 
-			   imagesSections.map((a,index)=><ImagesUploadSection sectionNo={index+1} key={index} />)
+			   pageState.map((imageSectionInfo)=><ImagesUploadSection 
+			   										imageSectionInfo={imageSectionInfo} 
+			   										key={imageSectionInfo.imageSectionId} 
+			   										handlePageState={handlePageState}
+			   									  />
+			   				)
 			}
 		</Container>
 		<SaveCancelSection />
