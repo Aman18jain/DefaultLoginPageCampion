@@ -16,37 +16,34 @@ const useStyles=makeStyles(theme=>({
 function DefaultLoginPageBackground(){
 
 	const setInitialState=()=>{
-		 let imageSections=new Array(DefaultImageSectionCount).fill('');
-         return imageSections.map((a,index)=>{
-         	return {
-         		imageSectionId:index+1,
-         		firstImage:{
-         			imageNo:1,
-         			fileExist:false,
-         			fileObj:null
-         		},
-         		secondImage:{
-                    imageNo:2,
-         			fileExist:false,
-         			fileObj:null
-         		},
-         		loginBoxAlignment:'center'
-         	};
-         });
+		 
+		 let initialState={};
+		 for(let i=0;i<DefaultImageSectionCount;i++){
+            initialState[i]={
+		 		0:null,
+		 		1:null,
+		 		loginBoxAlignment:'center'
+		 	}
+		 }
+		 return initialState;
 	}
 
 	const [pageState,setPageState]=useState(()=>setInitialState());
 	const classes=useStyles();
 
 	useEffect(()=>{
-      //It will get executed on component mount
-      //Will call GET API to fetch the saved page information
-      console.log('Component Did Mount');
+      
 	},[]);
 
-	const handlePageState=()=>{
-       console.log('We are in handlePageState');
-       setPageState([]);
+	const handlePageState=(operationType,fileObj,sectionId,imageNo)=>{
+
+       let newPageState = {...pageState};
+       if(operationType==='Adding'){
+            newPageState[sectionId][imageNo]=fileObj;
+       }else if(operationType==='Removing'){
+            newPageState[sectionId][imageNo]=null;
+       }
+       setPageState(newPageState);
 	}
 
 	return(
@@ -54,12 +51,13 @@ function DefaultLoginPageBackground(){
 	    <PageHeader/>
 		<Container className={classes.imageSectionsContainer}>
 			{ 
-			   pageState.map((imageSectionInfo)=><ImagesUploadSection 
-			   										imageSectionInfo={imageSectionInfo} 
-			   										key={imageSectionInfo.imageSectionId} 
-			   										handlePageState={handlePageState}
-			   									  />
-			   				)
+			  Object.keys(pageState).map((sectionId)=><ImagesUploadSection 
+			   											sectionInfo={pageState[sectionId]}
+			   											sectionId={sectionId} 
+			   											key={sectionId} 
+			   											handlePageState={handlePageState}
+			   									  	  />
+			   				            )
 			}
 		</Container>
 		<SaveCancelSection />

@@ -29,13 +29,13 @@ const useStyles=makeStyles(theme=>({
 function ImagesUploadSection(props){
     
     const classes=useStyles();
-    const { imageSectionId,firstImage,secondImage,loginBoxAlignment }=props.imageSectionInfo;
+    const { sectionInfo,sectionId }=props;
     
 	return(
 		//<Container className={classes.containerStyle}>
 		<Box className={classes.containerStyle}>
 			    <div className={classes.headerStyle}>
-	              <strong>Image {imageSectionId}</strong>
+	              <strong>Image {sectionId+1}</strong>
 			    </div>
 				<Grid container className={classes.root}>
 					<Grid item xs={5} sm={4} md={3}>
@@ -47,20 +47,22 @@ function ImagesUploadSection(props){
 				</Grid>
 				<Grid container className={`${classes.root}`}>
 				    <Grid item xs={5} sm={4} md={3}><ImageDropZone 
-				    									imageInfo={firstImage} 
-				    									imageSectionId={imageSectionId} 
+				    									imageObj={sectionInfo[0]} 
+				    									imageNo={0}
+				    									sectionId={sectionId} 
 				    									handlePageState={props.handlePageState} 
 				    								/>
 				    </Grid>
 				    <Grid item xs={5} sm={4} md={3}><ImageDropZone 
-				    									imageInfo={secondImage} 
-				    									imageSectionId={imageSectionId} 
+				    									imageObj={sectionInfo[1]} 
+				    									imageNo={1}
+				    									sectionId={sectionId} 
 				    									handlePageState={props.handlePageState} 
 				    								/>
 				    </Grid>
 				</Grid>
 				<LoginBoxAlignment 
-							loginBoxAlignment={loginBoxAlignment} 
+							loginBoxAlignment={sectionInfo.loginBoxAlignment} 
 							handlePageState={props.handlePageState}
 				/>	
 		</Box>		

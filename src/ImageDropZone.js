@@ -15,12 +15,17 @@ const useStyles=makeStyles(theme=>({
     	'& svg':{
     		
     	}
-    }	
+    },
+    dropZoneWithImage:{
+        '& div.MuiDropzoneArea-textContainer':{
+            display:'none'
+        },        
+    }    	
 }));
 
 function ImageDropZone(props){
 
-    const { imageInfo,imageSectionId,handlePageState } = props;
+    const { imageObj,imageNo,sectionId,handlePageState } = props;
 
 	const classes=useStyles();
 
@@ -29,14 +34,15 @@ function ImageDropZone(props){
       if(fileArr && fileArr.length===0){
         return;
       }
-      handlePageState();                 
+      handlePageState('Adding',fileArr[0],sectionId,imageNo);                 
          
     }
 
     const handleFileDelete=(fileObj)=>{
 
-    }
+       handlePageState('Removing',fileObj,sectionId,imageNo);                 
 
+    }
 
     return(
     	<DropzoneArea 
@@ -44,8 +50,8 @@ function ImageDropZone(props){
     	        filesLimit={1}
                 maxFileSize={5242880}
     	        acceptedFiles={['image/png','image/jpeg']}
-    	        dropzoneClass={`${classes.root} uploadIconColor uploadTextColor`}
-                initialFiles={[]}
+    	        dropzoneClass={`${classes.root} uploadIconColor uploadTextColor ${imageObj?classes.dropZoneWithImage:''}`}
+                fileObjects={[imageObj]}
                 onChange={handleFileChange}
                 onDelete={handleFileDelete}
     	/>
