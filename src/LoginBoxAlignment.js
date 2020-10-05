@@ -34,18 +34,26 @@ const useStyles=makeStyles(theme=>({
 
 }));
 
-function LoginBoxAlignment(props){
+function LoginBoxAlignment(props){ 
+
       const classes=useStyles();
+      const { loginBoxAlignment,sectionId,handlePageState } = props;
+
+      const handleChange=(event)=>{
+        handlePageState('LoginBoxAlignment',sectionId,event.target.value);
+      }
+
       return(
       	<Box display="flex" alignItems="center" pt={1} pb={1}>
       	 <FormLabel className={`${classes.labelStyle} alignmentText`} component="legend">Login Box Alignment:</FormLabel>
-         <RadioGroup aria-label="position" name="position" defaultValue={props.loginBoxAlignment} className={`${classes.root} ${classes.deviceSizeStyle}`}>
+         <RadioGroup onChange={handleChange} aria-label="position" name="position" value={loginBoxAlignment} className={`${classes.root} ${classes.deviceSizeStyle}`}>
            <FormControlLabel value="left" control={<Radio color="primary" />} label="Left Aligned" />
            <FormControlLabel value="center" control={<Radio color="primary" />} label="Center Aligned" />
            <FormControlLabel value="right" control={<Radio color="primary" />} label="Right Aligned" />
          </RadioGroup>
         </Box> 
       );
+
 }
 
 export default LoginBoxAlignment;

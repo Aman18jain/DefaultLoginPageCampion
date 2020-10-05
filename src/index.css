@@ -1,4 +1,4 @@
-.uploadIconColor svg{
+.uploadIconColor svg.MuiDropzoneArea-icon{
    color: lightgray;
 }
 .uploadTextColor p{

@@ -1,5 +1,5 @@
 import React from 'react';
-import {DropzoneArea} from 'material-ui-dropzone';
+import { DropzoneArea } from 'material-ui-dropzone';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles=makeStyles(theme=>({
@@ -17,9 +17,25 @@ const useStyles=makeStyles(theme=>({
     	}
     },
     dropZoneWithImage:{
-        '& div.MuiDropzoneArea-textContainer':{
+        '& > div.MuiDropzoneArea-textContainer':{
             display:'none'
-        },        
+        },
+        '& > div.MuiDropzonePreviewList-root':{
+            width:'100%',
+            height:'100%',
+            margin:'0px',
+            '& > div':{
+                padding:'2px',
+                height:'100%',
+                maxWidth:'unset',
+                flexBasis:'unset',
+                flexGrow:1,
+                '& > img':{
+                    width:'100%',
+                    height:'100%'
+                }
+            }
+        }        
     }    	
 }));
 
@@ -34,13 +50,13 @@ function ImageDropZone(props){
       if(fileArr && fileArr.length===0){
         return;
       }
-      handlePageState('Adding',fileArr[0],sectionId,imageNo);                 
+      handlePageState('Adding',sectionId,imageNo,fileArr[0]);                 
          
     }
 
     const handleFileDelete=(fileObj)=>{
 
-       handlePageState('Removing',fileObj,sectionId,imageNo);                 
+       handlePageState('Removing',sectionId,imageNo);                 
 
     }
 

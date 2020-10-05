@@ -3,7 +3,6 @@ import ImageDropZone from './ImageDropZone.js';
 import LoginBoxAlignment from './LoginBoxAlignment.js';
 import Grid from '@material-ui/core/Grid';
 import { Container,Box } from '@material-ui/core';   
-import {ImagesInSectionCount} from './constants.js';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles=makeStyles(theme=>({
@@ -35,7 +34,7 @@ function ImagesUploadSection(props){
 		//<Container className={classes.containerStyle}>
 		<Box className={classes.containerStyle}>
 			    <div className={classes.headerStyle}>
-	              <strong>Image {sectionId+1}</strong>
+	              <strong>Image {Number(sectionId)+1}</strong>
 			    </div>
 				<Grid container className={classes.root}>
 					<Grid item xs={5} sm={4} md={3}>
@@ -63,6 +62,7 @@ function ImagesUploadSection(props){
 				</Grid>
 				<LoginBoxAlignment 
 							loginBoxAlignment={sectionInfo.loginBoxAlignment} 
+							sectionId={sectionId}
 							handlePageState={props.handlePageState}
 				/>	
 		</Box>		

@@ -35,13 +35,15 @@ function DefaultLoginPageBackground(){
       
 	},[]);
 
-	const handlePageState=(operationType,fileObj,sectionId,imageNo)=>{
+	const handlePageState=(operationType,sectionId,...restParams)=>{
 
        let newPageState = {...pageState};
        if(operationType==='Adding'){
-            newPageState[sectionId][imageNo]=fileObj;
+            newPageState[sectionId][restParams[0]]=restParams[1];
        }else if(operationType==='Removing'){
-            newPageState[sectionId][imageNo]=null;
+            newPageState[sectionId][restParams[0]]=null;
+       }else if(operationType==='LoginBoxAlignment'){
+            newPageState[sectionId].loginBoxAlignment=restParams[0];
        }
        setPageState(newPageState);
 	}
