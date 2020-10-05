@@ -8,7 +8,7 @@ import PageHeader from './PageHeader.js';
 
 const useStyles=makeStyles(theme=>({
 	imageSectionsContainer:{
-		maxHeight:'70vh',
+		maxHeight:'64vh',
 		overflowY:'scroll',
 	}
 }));

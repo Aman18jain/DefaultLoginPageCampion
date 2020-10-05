@@ -45,14 +45,14 @@ function ImagesUploadSection(props){
 					</Grid>
 				</Grid>
 				<Grid container className={`${classes.root}`}>
-				    <Grid item xs={5} sm={4} md={3}><ImageDropZone 
+				    <Grid item xs={5} sm={4} md={3} id={`dropZone${sectionId+0}`}><ImageDropZone 
 				    									imageObj={sectionInfo[0]} 
 				    									imageNo={0}
 				    									sectionId={sectionId} 
 				    									handlePageState={props.handlePageState} 
 				    								/>
 				    </Grid>
-				    <Grid item xs={5} sm={4} md={3}><ImageDropZone 
+				    <Grid item xs={5} sm={4} md={3} id={`dropZone${sectionId+1}`}><ImageDropZone 
 				    									imageObj={sectionInfo[1]} 
 				    									imageNo={1}
 				    									sectionId={sectionId} 

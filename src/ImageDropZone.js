@@ -1,4 +1,4 @@
-import React from 'react';
+import React , { useEffect }from 'react';
 import { DropzoneArea } from 'material-ui-dropzone';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -43,6 +43,13 @@ function ImageDropZone(props){
 
     const { imageObj,imageNo,sectionId,handlePageState } = props;
 
+    useEffect(()=>{
+        if(imageObj){
+           let removeImageBtn=document.querySelector(`#dropZone${sectionId+imageNo} .MuiDropzonePreviewList-removeButton`);
+           removeImageBtn.addEventListener('click',handleFileDelete);
+        }        
+    },[imageObj]);
+
 	const classes=useStyles();
 
     const handleFileChange=(fileArr)=>{
@@ -54,10 +61,13 @@ function ImageDropZone(props){
          
     }
 
-    const handleFileDelete=(fileObj)=>{
-
-       handlePageState('Removing',sectionId,imageNo);                 
-
+    const handleFileDelete=(event)=>{
+       console.log(`Deleting================ Section Id:${sectionId} and Image No:${imageNo}`); 
+       if(window.confirm('Do you really want to remove the file?')){
+           handlePageState('Removing',sectionId,imageNo);                   
+       }else{
+           event.stopPropagation();
+       }
     }
 
     return(
@@ -67,9 +77,7 @@ function ImageDropZone(props){
                 maxFileSize={5242880}
     	        acceptedFiles={['image/png','image/jpeg']}
     	        dropzoneClass={`${classes.root} uploadIconColor uploadTextColor ${imageObj?classes.dropZoneWithImage:''}`}
-                fileObjects={[imageObj]}
                 onChange={handleFileChange}
-                onDelete={handleFileDelete}
     	/>
     );
 
