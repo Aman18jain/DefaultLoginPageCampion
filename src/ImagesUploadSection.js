@@ -9,6 +9,12 @@ const useStyles=makeStyles(theme=>({
    root:{
    	 '& > div:first-child':{
    	 	marginRight:'32px'
+   	 },
+   	 '& div.MuiSnackbar-root':{
+   	 	right:'24px',
+   	 	top:'24px',
+   	 	left:'auto',
+   	 	bottom:'auto'
    	 }
    },
    dimensionStyle:{
@@ -49,13 +55,15 @@ function ImagesUploadSection(props){
 				    									imageObj={sectionInfo[0]} 
 				    									imageNo={0}
 				    									sectionId={sectionId} 
+				    									reqImageDimension={{width:2048,height:1536}}
 				    									handlePageState={props.handlePageState} 
 				    								/>
 				    </Grid>
 				    <Grid item xs={5} sm={4} md={3} id={`dropZone${sectionId+1}`}><ImageDropZone 
 				    									imageObj={sectionInfo[1]} 
 				    									imageNo={1}
-				    									sectionId={sectionId} 
+				    									sectionId={sectionId}
+				    									reqImageDimension={{width:2048,height:1152}} 
 				    									handlePageState={props.handlePageState} 
 				    								/>
 				    </Grid>

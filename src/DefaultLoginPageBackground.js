@@ -5,6 +5,7 @@ import ImagesUploadSection from './ImagesUploadSection.js';
 import SaveCancelSection from './SaveCancelSection.js';
 import { makeStyles } from '@material-ui/core/styles';
 import PageHeader from './PageHeader.js';
+import CustomMessage from './CustomMessage.js';
 
 const useStyles=makeStyles(theme=>({
 	imageSectionsContainer:{
@@ -25,6 +26,11 @@ function DefaultLoginPageBackground(){
 		 		loginBoxAlignment:'center'
 		 	}
 		 }
+		 initialState.customMessage={
+		 	show:false,
+		 	message:'',
+		 	type:''
+		 };
 		 return initialState;
 	}
 
@@ -44,16 +50,30 @@ function DefaultLoginPageBackground(){
             newPageState[sectionId][restParams[0]]=null;
        }else if(operationType==='LoginBoxAlignment'){
             newPageState[sectionId].loginBoxAlignment=restParams[0];
+       }else if(operationType==='ShowCustomMessage'){
+            newPageState.customMessage.show=true;
+            newPageState.customMessage.message=restParams[0];
+            newPageState.customMessage.type=restParams[1];
+       }else if(operationType==='CloseCustomMessage'){
+            newPageState.customMessage.show=false;
+            newPageState.customMessage.message='';
+            newPageState.customMessage.type='';
+
        }
        setPageState(newPageState);
 	}
-
+    let sectionKeys=Object.keys(pageState).slice(0,Object.keys(pageState).length-1);
 	return(
 	  <>
+	    <CustomMessage show={pageState.customMessage.show} 
+	    			   type={pageState.customMessage.type} 
+	    			   message={pageState.customMessage.message}
+	    			   handlePageState={handlePageState}
+	    />	
 	    <PageHeader/>
 		<Container className={classes.imageSectionsContainer}>
 			{ 
-			  Object.keys(pageState).map((sectionId)=><ImagesUploadSection 
+			  sectionKeys.map((sectionId)=><ImagesUploadSection 
 			   											sectionInfo={pageState[sectionId]}
 			   											sectionId={sectionId} 
 			   											key={sectionId} 
