@@ -1,15 +1,18 @@
 import React , { useState, useEffect } from 'react';
-import { Container } from '@material-ui/core'; 
+import { Container,Box } from '@material-ui/core'; 
 import { DefaultImageSectionCount } from './constants.js';
 import ImagesUploadSection from './ImagesUploadSection.js';
 import SaveCancelSection from './SaveCancelSection.js';
 import { makeStyles } from '@material-ui/core/styles';
 import PageHeader from './PageHeader.js';
 import CustomMessage from './CustomMessage.js';
+import TimeIntervalSection from './TimeIntervalSection.js';
+import ImageDropDownSection from './ImageDropDownSection.js';
+import Button from '@material-ui/core/Button';
 
 const useStyles=makeStyles(theme=>({
 	imageSectionsContainer:{
-		maxHeight:'64vh',
+		maxHeight:'55vh',
 		overflowY:'scroll',
 	}
 }));
@@ -31,14 +34,17 @@ function DefaultLoginPageBackground(){
 		 	message:'',
 		 	type:''
 		 };
+		 initialState.rotationTimeInterval=null;
+		 initialState.staticImageSection=-1;
 		 return initialState;
 	}
 
 	const [pageState,setPageState]=useState(()=>setInitialState());
+
 	const classes=useStyles();
 
 	useEffect(()=>{
-      
+      //Get API to fetch saved page information
 	},[]);
 
 	const handlePageState=(operationType,sectionId,...restParams)=>{
@@ -62,7 +68,34 @@ function DefaultLoginPageBackground(){
        }
        setPageState(newPageState);
 	}
-    let sectionKeys=Object.keys(pageState).slice(0,Object.keys(pageState).length-1);
+    
+    const addImageSection=()=>{
+    	let newPageState={...pageState};
+    	let currentSectionsCount=Object.keys(newPageState).length-3;
+    	newPageState[currentSectionsCount]={
+    		0:null,
+    		1:null,
+    		loginBoxAlignment:'center'
+    	};
+    	newPageState.customMessage={
+    		show:true,
+    		message:'New image section added successfully',
+    		type:'Success'
+    	};
+    	setPageState(newPageState);
+    }
+
+    const changeStaticImageSection=(selectedSection)=>{
+
+    	let newPageState={...pageState};
+    	newPageState.staticImageSection=selectedSection;
+    	setPageState(newPageState);
+
+    }
+
+    let sectionKeys=Object.keys(pageState).filter(key=>Number(key)>=0);
+    let displayAddSectionBtn=true;
+    let staticImage=false;//i.e no image rotation
 	return(
 	  <>
 	    <CustomMessage show={pageState.customMessage.show} 
@@ -81,7 +114,18 @@ function DefaultLoginPageBackground(){
 			   									  	  />
 			   				            )
 			}
+			{
+               displayAddSectionBtn?(<Box display="flex" justifyContent="flex-end">
+            						<Button onClick={addImageSection} disableElevation variant='contained' color='primary'>Add Section</Button>
+            					 </Box>):null 
+			}
 		</Container>
+        {
+        	!staticImage ? <TimeIntervalSection /> : (<ImageDropDownSection sectionCount={Object.keys(pageState).length-3}
+        																    staticImageSection={pageState.staticImageSection} 
+        																    changeStaticImageSection={changeStaticImageSection}
+        											 />)  
+        }
 		<SaveCancelSection />
       </>
 	);

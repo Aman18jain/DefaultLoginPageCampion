@@ -9,12 +9,6 @@ const useStyles=makeStyles(theme=>({
    root:{
    	 '& > div:first-child':{
    	 	marginRight:'32px'
-   	 },
-   	 '& div.MuiSnackbar-root':{
-   	 	right:'24px',
-   	 	top:'24px',
-   	 	left:'auto',
-   	 	bottom:'auto'
    	 }
    },
    dimensionStyle:{
@@ -23,11 +17,6 @@ const useStyles=makeStyles(theme=>({
    headerStyle:{
    	paddingBottom:'4px',
    	paddingTop:'4px'
-   },
-   containerStyle:{
-   	marginBottom:'24px',
-   	backgroundColor:'#f9f9f9',
-   	boxShadow:'1px 1px 1px 0px #d6d6d6',
    }
 }));
 
@@ -38,7 +27,7 @@ function ImagesUploadSection(props){
     
 	return(
 		//<Container className={classes.containerStyle}>
-		<Box className={classes.containerStyle}>
+		<Box className='imageSection' mb={3}>
 			    <div className={classes.headerStyle}>
 	              <strong>Image {Number(sectionId)+1}</strong>
 			    </div>

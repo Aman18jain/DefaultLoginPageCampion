@@ -1,3 +1,8 @@
+.imageSection{
+	background-color: #f9f9f9;
+	box-shadow: 1px 1px 1px 0px #d6d6d6 ;
+}
+
 .uploadIconColor svg.MuiDropzoneArea-icon{
    color: lightgray;
 }
@@ -17,7 +22,7 @@ button.cancelBtnStyle{
 	border-color: #ff0000;
 }
 .fileSuccess > div{
-	color: #F00;
-	background-color: #fee8e8;
-	border-color: #ff0000;
+    border-color: #4caf50;
+    background-color: #d5e6d6;
+    color: #16711a;
 }
