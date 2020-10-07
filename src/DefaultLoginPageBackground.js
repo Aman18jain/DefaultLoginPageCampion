@@ -9,6 +9,7 @@ import CustomMessage from './CustomMessage.js';
 import TimeIntervalSection from './TimeIntervalSection.js';
 import ImageDropDownSection from './ImageDropDownSection.js';
 import Button from '@material-ui/core/Button';
+import CustomConfirmationModal from './CustomConfirmationModal.js';
 
 const useStyles=makeStyles(theme=>({
 	imageSectionsContainer:{
@@ -34,6 +35,11 @@ function DefaultLoginPageBackground(){
 		 	message:'',
 		 	type:''
 		 };
+		 initialState.customConfirmationModal={
+            show:false,
+            sectionId:-1,
+            imageNo:-1
+		 };
 		 initialState.rotationTimeInterval=null;
 		 initialState.staticImageSection=-1;
 		 return initialState;
@@ -47,31 +53,80 @@ function DefaultLoginPageBackground(){
       //Get API to fetch saved page information
 	},[]);
 
-	const handlePageState=(operationType,sectionId,...restParams)=>{
+	const handlePageState=(operationType,...restParams)=>{
 
        let newPageState = {...pageState};
-       if(operationType==='Adding'){
-            newPageState[sectionId][restParams[0]]=restParams[1];
-       }else if(operationType==='Removing'){
-            newPageState[sectionId][restParams[0]]=null;
-       }else if(operationType==='LoginBoxAlignment'){
-            newPageState[sectionId].loginBoxAlignment=restParams[0];
-       }else if(operationType==='ShowCustomMessage'){
-            newPageState.customMessage.show=true;
-            newPageState.customMessage.message=restParams[0];
-            newPageState.customMessage.type=restParams[1];
-       }else if(operationType==='CloseCustomMessage'){
-            newPageState.customMessage.show=false;
-            newPageState.customMessage.message='';
-            newPageState.customMessage.type='';
+
+       if(operationType==='FILE_CHANGE'){
+
+       	    let [sectionId,imageNo,fileObj] = restParams;
+            newPageState[sectionId][imageNo] = fileObj;
+
+       }
+       else if(operationType==='INCORRECT_FILE_REMOVE'){
+
+       	    let [sectionId,imageNo,message] = restParams;
+            newPageState[sectionId][imageNo] = null;
+            newPageState.customMessage={
+            	show:true,
+            	message:message,
+            	type:'error'
+            };
+
+       }
+       else if(operationType==='LOGIN_BOX_ALIGNMENT'){
+
+       	    let [sectionId,loginBoxAlignment] = restParams; 
+            newPageState[sectionId].loginBoxAlignment = loginBoxAlignment;
+
+       }
+       else if(operationType==='SHOW_CUSTOM_MESSAGE'){
+
+       	    newPageState.customMessage={
+       	    	show:true,
+       	    	message:restParams[0],
+       	    	type:restParams[1]
+       	    }
+
+       }
+       else if(operationType==='CLOSE_CUSTOM_MESSAGE'){
+
+       	    newPageState.customMessage={
+       	    	show:false,
+       	    	message:'',
+       	    	type:''
+       	    }
+
+       }
+       else if(operationType==='OPEN_FILE_DELETE_CONFIRMATION_MODAL'){
+
+       	    newPageState.customConfirmationModal={
+       	    	show:true,
+       	    	sectionId:restParams[0],
+       	    	imageNo:restParams[1]
+       	    };
+       }
+       else if(operationType==='CLOSE_FILE_DELETE_CONFIRMATION_MODAL'){
+
+            let isDeleteConfirm=restParams[0];
+            let { sectionId,imageNo }= newPageState.customConfirmationModal;
+            if(isDeleteConfirm){
+            	newPageState[sectionId][imageNo]=null;
+            }
+       	    newPageState.customConfirmationModal={
+       	    	show:false,
+       	    	sectionId:-1,
+       	    	imageNo:-1
+       	    }
 
        }
        setPageState(newPageState);
 	}
     
     const addImageSection=()=>{
+
     	let newPageState={...pageState};
-    	let currentSectionsCount=Object.keys(newPageState).length-3;
+    	let currentSectionsCount=Object.keys(newPageState).length-4;
     	newPageState[currentSectionsCount]={
     		0:null,
     		1:null,
@@ -80,7 +135,7 @@ function DefaultLoginPageBackground(){
     	newPageState.customMessage={
     		show:true,
     		message:'New image section added successfully',
-    		type:'Success'
+    		type:'success'
     	};
     	setPageState(newPageState);
     }
@@ -98,6 +153,9 @@ function DefaultLoginPageBackground(){
     let staticImage=false;//i.e no image rotation
 	return(
 	  <>
+	    <CustomConfirmationModal show={pageState.customConfirmationModal.show}
+	    						 handlePageState={handlePageState}
+	    />
 	    <CustomMessage show={pageState.customMessage.show} 
 	    			   type={pageState.customMessage.type} 
 	    			   message={pageState.customMessage.message}
@@ -121,7 +179,7 @@ function DefaultLoginPageBackground(){
 			}
 		</Container>
         {
-        	!staticImage ? <TimeIntervalSection /> : (<ImageDropDownSection sectionCount={Object.keys(pageState).length-3}
+        	!staticImage ? <TimeIntervalSection /> : (<ImageDropDownSection sectionCount={Object.keys(pageState).length-4}
         																    staticImageSection={pageState.staticImageSection} 
         																    changeStaticImageSection={changeStaticImageSection}
         											 />)  

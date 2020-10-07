@@ -28,7 +28,7 @@ function CustomMessage(props){
 	const classes=useStyles();
 
 	const closeCustomMessage=()=>{
-		handlePageState('CloseCustomMessage');
+		handlePageState('CLOSE_CUSTOM_MESSAGE');
 	}
 
 	return(

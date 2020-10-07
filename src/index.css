@@ -16,12 +16,12 @@ button.cancelBtnStyle{
 	background-color: white;
 	color: black; 
 }
-.fileError > div{
+.fileerror > div{
 	color: #F00;
 	background-color: #fee8e8;
 	border-color: #ff0000;
 }
-.fileSuccess > div{
+.filesuccess > div{
     border-color: #4caf50;
     background-color: #d5e6d6;
     color: #16711a;

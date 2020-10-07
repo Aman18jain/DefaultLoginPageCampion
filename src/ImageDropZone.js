@@ -55,8 +55,9 @@ function ImageDropZone(props){
                     document.querySelector(`#dropZone${sectionId+imageNo} .MuiDropzonePreviewList-root`).style.display='none';
 
                     //Show incorrect file message to user.
-                    handlePageState('Removing',sectionId,imageNo); 
-                    handlePageState('ShowCustomMessage',null,'Kindly select image in given dimensions','Error');                
+                    let wrongDimensionMsg = 'Kindly select image in given dimensions';
+                    handlePageState('INCORRECT_FILE_REMOVE',sectionId,imageNo,wrongDimensionMsg); 
+                                    
                }else{
                     document.querySelector(`#dropZone${sectionId+imageNo} .MuiDropzonePreviewList-root`).style.display='flex';
 
@@ -67,6 +68,11 @@ function ImageDropZone(props){
            }).catch(err=>{
               console.log('Some error in  reading file');
            });           
+        }else{
+            let imageComponent=document.querySelector(`#dropZone${sectionId+imageNo} .MuiDropzonePreviewList-root`);
+            if(imageComponent){
+               imageComponent.style.display='none';
+            }
         }        
     },[imageObj]);
 
@@ -94,24 +100,21 @@ function ImageDropZone(props){
       if(fileArr && fileArr.length===0){
         return;
       }
-      handlePageState('Adding',sectionId,imageNo,fileArr[0]);                 
+      handlePageState('FILE_CHANGE',sectionId,imageNo,fileArr[0]);                 
          
     }
 
     const handleFileDelete=(event)=>{
+
+       event.stopPropagation();
+       handlePageState('OPEN_FILE_DELETE_CONFIRMATION_MODAL',sectionId,imageNo);
        
-       if(window.confirm('Do you really want to remove the file?')){
-           //Show file remove message to user
-           handlePageState('Removing',sectionId,imageNo);                   
-       }else{
-           event.stopPropagation();
-       }
     }
 
     const handleFileRejection=(fileArr)=>{
         
         let rejectionReason=getFileRejectionReason(fileArr[0]);
-        handlePageState('ShowCustomMessage',null,rejectionReason,'Error');
+        handlePageState('SHOW_CUSTOM_MESSAGE',rejectionReason,'error');
     }
 
     const getFileRejectionReason=(fileObj)=>{

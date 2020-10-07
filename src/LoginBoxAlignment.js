@@ -40,7 +40,7 @@ function LoginBoxAlignment(props){
       const { loginBoxAlignment,sectionId,handlePageState } = props;
 
       const handleChange=(event)=>{
-        handlePageState('LoginBoxAlignment',sectionId,event.target.value);
+        handlePageState('LOGIN_BOX_ALIGNMENT',sectionId,event.target.value);
       }
 
       return(
